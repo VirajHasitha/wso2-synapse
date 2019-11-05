@@ -109,13 +109,6 @@ public class ServerManager {
         initialized = true;
         RuntimeStatisticCollector.init();
 
-        //Loading file properties before the task services start
-        if (log.isDebugEnabled()) {
-            log.debug("Loading file property configurations");
-        }
-        FilePropertyLoader propertyLoader = FilePropertyLoader.getInstance();
-        propertyLoader.loadPropertiesFile();
-
         return this.serverContextInformation.getServerState();
     }
 

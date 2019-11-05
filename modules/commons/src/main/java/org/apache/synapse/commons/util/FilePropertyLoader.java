@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -38,19 +37,26 @@ public class FilePropertyLoader {
     private static final String SYNAPSE_PROPERTY_FILE = "synapse.properties";
     private static final String FILE_PROPERTY_PATH = "synapse.commons.file.properties.location";
     private static final String FILE_PROPERTY_FILENAME = "synapse.commons.file.properties.file.name";
-    public Map propertyMap;
+    private Map propertyMap;
 
-    private static FilePropertyLoader fileLoaderInstance = new FilePropertyLoader();
+    private static FilePropertyLoader fileLoaderInstance;
 
     public static FilePropertyLoader getInstance() {
-        return fileLoaderInstance;
+        if ( null == fileLoaderInstance) {
+            fileLoaderInstance = new FilePropertyLoader();
+            fileLoaderInstance.loadPropertiesFile();
+            return fileLoaderInstance;
+        } else {
+            return fileLoaderInstance;
+        }
+
     }
 
     public String getValue(String input) {
         return (String) propertyMap.get(input);
     }
 
-    public void loadPropertiesFile() throws SynapseCommonsException {
+    private void loadPropertiesFile() throws SynapseCommonsException {
 
         Properties properties = MiscellaneousUtil.loadProperties(SYNAPSE_PROPERTY_FILE);
         String filePath = properties.getProperty(FILE_PROPERTY_PATH);
